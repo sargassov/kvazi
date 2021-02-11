@@ -119,7 +119,6 @@ public class Controller implements Initializable {
                                 setAuthenticated(true);
                                 break;
                             }
-
                             if (str.equals(Command.REG_OK)) {
                                 socket.setSoTimeout(0);
                                 regController.resultTryToReg(true);
