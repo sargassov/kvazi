@@ -58,6 +58,9 @@ public class Controller implements Initializable {
     private Stage regStage;
     private RegController regController;
 
+    private ChatHistory chatHistory;
+    private static boolean firstClient = true;
+
     public void setAuthenticated(boolean authenticated) {
         this.authenticated = authenticated;
         messagePanel.setVisible(authenticated);
@@ -94,6 +97,10 @@ public class Controller implements Initializable {
             });
         });
 
+        if(firstClient){
+            chatHistory = new ChatHistory();
+            firstClient = false;
+        }
         setAuthenticated(false);
     }
 
@@ -131,10 +138,21 @@ public class Controller implements Initializable {
                         }
                     }
 
+                    if(chatHistory.exportHistory().size() > chatHistory.getInitialCapacity()){
+                        for(int x = chatHistory.exportHistory().size() - chatHistory.getInitialCapacity();
+                            x <= chatHistory.exportHistory().size(); x++){
+                            textArea.appendText(chatHistory.exportHistory().get(x - 1) + "\n");
+                        }
+                    }
+                    else{
+                        for(String string : chatHistory.exportHistory()){
+                            textArea.appendText(string + "\n");
+                        }
+                    }
+
                     //цикл работы
                     while (true) {
                         String str = in.readUTF();
-
                         if (str.startsWith("/")) {
                             if (str.equals(Command.END)) {
                                 setAuthenticated(false);
@@ -151,6 +169,9 @@ public class Controller implements Initializable {
                                 });
                             }
                         } else {
+                            if(nickname.equals(str.split("\\s")[1])) {
+                                chatHistory.addToHistory(str);
+                            }
                             textArea.appendText(str + "\n");
                         }
                     }
@@ -180,6 +201,9 @@ public class Controller implements Initializable {
         }
     }
 
+    public void returnFromTheHistory(String text){
+        textArea.appendText(text + "\n");
+    }
 
     public void sendMsg(ActionEvent actionEvent) {
         try {

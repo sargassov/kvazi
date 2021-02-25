@@ -34,9 +34,9 @@ public class ClientHandler {
                         String str = in.readUTF();
                         if (str.startsWith("/")) {
                             if (str.equals(Command.END)) {
-                                System.out.println("client want to disconnected ");
+                                System.out.println("client want to disconnect ");
                                 out.writeUTF(Command.END);
-                                throw new RuntimeException("client want to disconnected");
+                                throw new RuntimeException("client want to disconnect");
                             }
                             if (str.startsWith(Command.AUTH)) {
                                 String[] token = str.split("\\s");
@@ -50,7 +50,7 @@ public class ClientHandler {
                                         server.subscribe(this);
                                         break;
                                     } else {
-                                        sendMsg("С этим логинов уже вошли");
+                                        sendMsg("С этим логином уже вошли");
                                     }
                                 } else {
                                     sendMsg("Неверный логин / пароль");
@@ -65,6 +65,7 @@ public class ClientHandler {
                                 boolean regSuccessful = server.getAuthService()
                                         .registration(token[1], token[2], token[3]);
                                 if (regSuccessful) {
+                                    socket.setSoTimeout(0);
                                     sendMsg(Command.REG_OK);
                                 } else {
                                     sendMsg(Command.REG_NO);

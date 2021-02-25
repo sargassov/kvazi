@@ -62,6 +62,10 @@ public class Server {
         sender.sendMsg("not found user: "+ receiver);
     }
 
+    public List<ClientHandler> getClients() {
+        return clients;
+    }
+
     public void subscribe(ClientHandler clientHandler) {
         clients.add(clientHandler);
         broadcastClientList();
