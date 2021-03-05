@@ -10,6 +10,7 @@ import java.net.SocketTimeoutException;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.*;
 
 public class ClientHandler {
     private Server server;
@@ -21,15 +22,18 @@ public class ClientHandler {
     private String nickname;
     private String login;
 
+    private static Logger log;
+
     private ExecutorService service;
 
-    public ClientHandler(Server server, Socket socket) {
+    public ClientHandler(Server server, Socket socket, Logger logger) {
         service = Executors.newCachedThreadPool();
         try {
             this.server = server;
             this.socket = socket;
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            log = logger;
 
             service.execute(() -> {
                 try {
@@ -40,6 +44,7 @@ public class ClientHandler {
                         if (str.startsWith("/")) {
                             if (str.equals(Command.END)) {
                                 System.out.println("client want to disconnect ");
+                                log.info("client want to disconnect ");
                                 out.writeUTF(Command.END);
                                 throw new RuntimeException("client want to disconnect");
                             }
@@ -53,12 +58,15 @@ public class ClientHandler {
                                         nickname = newNick;
                                         sendMsg(Command.AUTH_OK + " " + nickname);
                                         server.subscribe(this);
+                                        log.info("client tryed to authenticated. Successfully");
                                         break;
                                     } else {
                                         sendMsg("С этим логином уже вошли");
+                                        log.log(Level.SEVERE, "login has arleady used");
                                     }
                                 } else {
                                     sendMsg("Неверный логин / пароль");
+                                    log.log(Level.WARNING, "incorrect login/password");
                                 }
                             }
 
@@ -72,8 +80,10 @@ public class ClientHandler {
                                 if (regSuccessful) {
                                     socket.setSoTimeout(0);
                                     sendMsg(Command.REG_OK);
+                                    log.info("Registration OK");
                                 } else {
                                     sendMsg(Command.REG_NO);
+                                    log.log(Level.WARNING, "Registration failed");
                                 }
                             }
                         }
@@ -86,6 +96,7 @@ public class ClientHandler {
                         if (str.startsWith("/")) {
                             if (str.equals(Command.END)) {
                                 out.writeUTF(Command.END);
+                                log.log(Level.INFO, "client disconnected");
                                 break;
                             }
 
@@ -95,6 +106,7 @@ public class ClientHandler {
                                     continue;
                                 }
                                 server.privateMsg(this, token[1], token[2]);
+                                log.log(Level.INFO, "client wrote a private message");
                             }
                         } else {
                             server.broadcastMsg(this, str);
@@ -105,29 +117,32 @@ public class ClientHandler {
                 } catch (SocketTimeoutException e){
                     try {
                         out.writeUTF(Command.END);
+                        log.log(Level.INFO, "client's escape successfully");
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        log.log(Level.SEVERE, "IOException", e);
                     }
                 } catch (RuntimeException e) {
-                    System.out.println(e.getMessage());
+                    log.log(Level.SEVERE, "RuntimeException", e);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.log(Level.SEVERE, "IOException", e);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.SEVERE, "SQLException", e);;
                 } finally {
                     System.out.println("Client disconnected");
+                    log.info("client disconnected");
                     server.unsubscribe(this);
                     try {
                         socket.close();
+                        log.info("socket was closed");
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        log.log(Level.SEVERE, "IOException", e);
                     }
                 }
             });
             service.shutdown();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, "IOException", e);
         }
     }
 
@@ -135,7 +150,7 @@ public class ClientHandler {
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, "ERROR in client message", e);
         }
     }
 
