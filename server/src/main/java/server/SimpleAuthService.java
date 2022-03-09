@@ -1,5 +1,7 @@
 package server;
 
+import server.authentication_services.AuthService;
+
 import java.util.ArrayList;
 import java.util.List;
 

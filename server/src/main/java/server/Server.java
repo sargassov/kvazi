@@ -1,99 +1,43 @@
 package server;
 
-import commands.Command;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import server.authentication_services.AuthHandler;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 
 public class Server {
-    private ServerSocket server;
-    private Socket socket;
-    private final int PORT = 8189;
-    private List<ClientHandler> clients;
-    private AuthService authService;
+    private static List<User> clients;
 
     public Server() {
         clients = new CopyOnWriteArrayList<>();
-        authService = new SimpleAuthService();
-        try {
-            server = new ServerSocket(PORT);
-            System.out.println("server started");
-
-            while (true) {
-                socket = server.accept();
-                System.out.println("client connected" + socket.getRemoteSocketAddress());
-                new ClientHandler(this, socket);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                server.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        new Connector(this).getConnect();
+        new AuthHandler(clients);
     }
 
-    public void broadcastMsg(ClientHandler sender, String msg) {
+    public void broadcastMsg(User sender, String msg) {
         String message = String.format("[ %s ] : %s", sender.getNickname(), msg);
-        for (ClientHandler c : clients) {
-            c.sendMsg(message);
-        }
+        clients.forEach(c -> c.sendMsg(message));
     }
 
-    public void privateMsg(ClientHandler sender, String receiver, String msg) {
+    public void privateMsg(User sender, String receiver, String msg) {
         String message = String.format("[ %s ] to [ %s ]: %s", sender.getNickname(), receiver, msg);
-        for (ClientHandler c : clients) {
-            if(c.getNickname().equals(receiver)){
-                c.sendMsg(message);
-                if(!c.equals(sender)){
-                    sender.sendMsg(message);
-                }
-                return;
-            }
-        }
-        sender.sendMsg("not found user: "+ receiver);
-    }
+        List<User> clientList = clients.stream()
+                .filter(c -> c.getNickname().equals(receiver) || c.equals(sender))
+                .collect(Collectors.toList());
 
-    public void subscribe(ClientHandler clientHandler) {
-        clients.add(clientHandler);
-        broadcastClientList();
-    }
-
-    public void unsubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
-        broadcastClientList();
-    }
-
-    public AuthService getAuthService() {
-        return authService;
-    }
-
-    public boolean isLoginAuthenticated(String login){
-        for (ClientHandler c : clients) {
-            if(c.getLogin().equals(login)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void broadcastClientList(){
-        StringBuilder sb = new StringBuilder(Command.CLIENT_LIST);
-        for (ClientHandler c : clients) {
-            sb.append(" ").append(c.getNickname());
+        if(clientList.size() == 0){
+            sender.sendMsg("not found user: " + receiver);
+            return;
         }
 
-        String message = sb.toString();
+        clientList.stream().filter(c -> c.getNickname().equals(receiver)).forEach(c -> c.sendMsg(message));
+        clientList.stream().filter(c -> !c.equals(sender)).forEach(c -> sender.sendMsg(message));
+    }
 
-        for (ClientHandler c : clients) {
-            c.sendMsg(message);
-        }
+    public static List<User> getClients() {
+        return clients;
     }
 }

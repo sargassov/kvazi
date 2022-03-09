@@ -1,4 +1,4 @@
-package server;
+package server.authentication_services;
 
 public interface AuthService {
     String getNicknameByLoginAndPassword(String login, String password);
