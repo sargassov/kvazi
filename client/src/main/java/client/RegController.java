@@ -1,5 +1,6 @@
 package client;
 
+import commands.SystemMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -28,12 +29,12 @@ public class RegController {
         String nickname = nicknameField.getText().trim();
 
         if (login.length() * password.length() * nickname.length() == 0) {
-            textArea.appendText("Логин пароль и ник не должны быть пустыми\n");
+            textArea.appendText(SystemMessage.LOGIN_OR_PASSWORD_MUST_NOT_BE_EMPTY);
             return;
         }
 
         if (login.contains(" ") || password.contains(" ") || nickname.contains(" ")) {
-            textArea.appendText("Логин пароль и ник не должны содержить пробелов\n");
+            textArea.appendText(SystemMessage.LOGIN_AND_PASSWORD_MUST_NOT_CONTAINS_SPACES);
             return;
         }
 
@@ -42,10 +43,10 @@ public class RegController {
 
     public void resultTryToReg(boolean flag) {
         if (flag) {
-            textArea.appendText("Регистрация прошла успешно\n");
+            textArea.appendText(SystemMessage.REGISTRATION_PASSED);
         } else {
-            textArea.appendText("Регистрация не получилось\n" +
-                    "Возможно логин или никнейм уже заняты\n");
+            textArea.appendText(SystemMessage.REGISTRATION_FAILED +
+                    SystemMessage.MAYBE_LOGIN_OR_PASSWORD_HAS_ALREDY_BLOCKED);
         }
     }
 }

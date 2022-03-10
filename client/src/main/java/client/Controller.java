@@ -133,7 +133,7 @@ public class Controller implements Initializable {
                 }
             }
 
-            }).start();
+        }).start();
     }
 
     private boolean workCycleHandler(String str) {
