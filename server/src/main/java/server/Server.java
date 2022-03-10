@@ -1,6 +1,7 @@
 package server;
 
 
+import commands.SystemMessage;
 import server.authentication_services.AuthHandler;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class Server {
                 .collect(Collectors.toList());
 
         if(clientList.size() == 0){
-            sender.sendMsg("not found user: " + receiver);
+            sender.sendMsg(SystemMessage.USER_NOT_FOUND + receiver);
             return;
         }
 

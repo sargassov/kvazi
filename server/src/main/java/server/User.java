@@ -82,7 +82,7 @@ public class User {
                 } catch (IOException e) {
                     e.printStackTrace();
                 } finally {
-                    System.out.println("Client disconnected");
+                    System.out.println(SystemMessage.CLIENT_DISCONNECTED);
                     authHandler.unsubscribe(this);
                     try {
                         socket.close();
