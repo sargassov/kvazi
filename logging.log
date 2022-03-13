@@ -1,0 +1,20 @@
+мар 13, 2022 11:22:01 PM server.Server <init>
+INFO: server started
+мар 13, 2022 11:22:53 PM server.Server <init>
+INFO: client connected
+мар 13, 2022 11:22:53 PM server.Server <init>
+INFO: client created successfully
+мар 13, 2022 11:22:53 PM server.Server subscribe
+INFO: client was added
+мар 13, 2022 11:22:53 PM server.ClientHandler lambda$new$0
+INFO: client tryed to authenticated. Successfully
+мар 13, 2022 11:22:56 PM server.Server broadcastMsg
+INFO: message: "[ asd ] : advafbsfg" was sent
+мар 13, 2022 11:23:08 PM server.ClientHandler lambda$new$0
+INFO: client disconnected
+мар 13, 2022 11:23:08 PM server.ClientHandler lambda$new$0
+INFO: client disconnected
+мар 13, 2022 11:23:08 PM server.Server unsubscribe
+INFO: client was removed
+мар 13, 2022 11:23:08 PM server.ClientHandler lambda$new$0
+INFO: socket was closed
