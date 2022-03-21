@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -59,7 +60,6 @@ public class Controller implements Initializable {
     private Stage regStage;
     private RegController regController;
 
-    private ChatHistory chatHistory;
     private static boolean firstClient = true;
 
     public void setAuthenticated(boolean authenticated) {
@@ -94,12 +94,6 @@ public class Controller implements Initializable {
                 }
             });
         });
-
-        if(firstClient){
-            chatHistory = new ChatHistory();
-            firstClient = false;
-        }
-        setAuthenticated(false);
     }
 
     private void connect() {
@@ -137,26 +131,11 @@ public class Controller implements Initializable {
 
                     }
 
-//                    if(chatHistory.exportHistory().size() > chatHistory.getInitialCapacity()){
-//                        for(int x = chatHistory.exportHistory().size() - chatHistory.getInitialCapacity();
-//                            x <= chatHistory.exportHistory().size(); x++){
-//                            textArea.appendText(chatHistory.exportHistory().get(x - 1) + "\n");
-//                        }
-//                    }
-//                    else{
-//                        for(String string : chatHistory.exportHistory()){
-//                            textArea.appendText(string + "\n");
-//                        }
-//                    }
-
                     //цикл работы
                     while (true) {
                         String str = in.readUTF();
 
                         if(!str.startsWith("/")){
-                            if(nickname.equals(str.split("\\s")[1])) {
-                                chatHistory.addToHistory(str);
-                            }
                             textArea.appendText(str + "\n");
                         }
 

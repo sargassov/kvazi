@@ -104,3 +104,4 @@
 [ qwe ] : e
 [ qwe ] : w
 [ zxc ] to [ zxc ]: 
+[ asd ] : asdasd

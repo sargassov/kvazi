@@ -1,96 +1,137 @@
-мар 21, 2022 3:32:41 PM server.Connector <init>
+мар 21, 2022 3:36:15 PM server.Connector <init>
 INFO: server started
-мар 21, 2022 3:33:06 PM server.Connector <init>
+мар 21, 2022 3:36:39 PM server.Connector <init>
 INFO: client connected
-мар 21, 2022 3:33:06 PM server.Connector <init>
+мар 21, 2022 3:36:39 PM server.Connector <init>
 INFO: client created successfully
-мар 21, 2022 3:33:06 PM server.Server subscribe
+мар 21, 2022 3:36:39 PM server.Server subscribe
 INFO: client was added
-мар 21, 2022 3:33:06 PM server.ClientHandler authCommandHandler
+мар 21, 2022 3:36:39 PM server.ClientHandler authCommandHandler
 INFO: client tryed to authenticated. Successfully
-мар 21, 2022 3:33:18 PM server.ClientHandler endCommandHandler
+мар 21, 2022 3:36:51 PM server.Server broadcastMsg
+INFO: message: "[ asd ] : asdasd" was sent
+мар 21, 2022 3:37:26 PM server.Connector <init>
+INFO: client connected
+мар 21, 2022 3:37:26 PM server.Connector <init>
+INFO: client created successfully
+мар 21, 2022 3:37:26 PM server.Server subscribe
+INFO: client was added
+мар 21, 2022 3:37:26 PM server.ClientHandler authCommandHandler
+INFO: client tryed to authenticated. Successfully
+мар 21, 2022 3:38:07 PM server.ClientHandler lambda$start$0
+SEVERE: IOException
+java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:210)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.net.SocketInputStream.read(SocketInputStream.java:224)
+	at java.io.DataInputStream.readUnsignedShort(DataInputStream.java:337)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:589)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:564)
+	at server.ClientHandler.lambda$start$0(ClientHandler.java:63)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+мар 21, 2022 3:38:07 PM server.ClientHandler lambda$start$0
 INFO: client disconnected
-мар 21, 2022 3:33:18 PM server.ClientHandler lambda$start$0
-INFO: client disconnected
-мар 21, 2022 3:33:18 PM server.Server unsubscribe
+мар 21, 2022 3:38:07 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 3:33:18 PM server.ClientHandler lambda$start$0
+мар 21, 2022 3:38:07 PM server.ClientHandler lambda$start$0
 INFO: socket was closed
-мар 21, 2022 3:33:48 PM server.Connector <init>
+мар 21, 2022 3:38:22 PM server.Connector <init>
 INFO: client connected
-мар 21, 2022 3:33:48 PM server.Connector <init>
+мар 21, 2022 3:38:22 PM server.Connector <init>
 INFO: client created successfully
-мар 21, 2022 3:33:48 PM server.Server subscribe
+мар 21, 2022 3:38:22 PM server.Server subscribe
 INFO: client was added
-мар 21, 2022 3:33:48 PM server.ClientHandler authCommandHandler
+мар 21, 2022 3:38:22 PM server.ClientHandler authCommandHandler
 INFO: client tryed to authenticated. Successfully
-мар 21, 2022 3:33:53 PM server.Connector <init>
-INFO: client connected
-мар 21, 2022 3:33:53 PM server.Connector <init>
-INFO: client created successfully
-мар 21, 2022 3:33:53 PM server.Server subscribe
-INFO: client was added
-мар 21, 2022 3:33:53 PM server.ClientHandler authCommandHandler
-INFO: client tryed to authenticated. Successfully
-мар 21, 2022 3:33:56 PM server.ClientHandler privateMessageHandler
-INFO: client wrote a private message
-мар 21, 2022 3:33:59 PM server.Server privateMsg
-INFO: private message: "[ asd ] to [ qwe ]: qwdqwd" was sent to qwe
-мар 21, 2022 3:33:59 PM server.ClientHandler privateMessageHandler
-INFO: client wrote a private message
-мар 21, 2022 3:34:01 PM server.Server broadcastMsg
-INFO: message: "[ asd ] : qwdqwd" was sent
-мар 21, 2022 3:34:01 PM server.Server broadcastMsg
-INFO: message: "[ asd ] : qwdqwd" was sent
-мар 21, 2022 3:34:13 PM server.ClientHandler endCommandHandler
+мар 21, 2022 3:38:24 PM server.ClientHandler endCommandHandler
 INFO: client disconnected
-мар 21, 2022 3:34:13 PM server.ClientHandler lambda$start$0
+мар 21, 2022 3:38:24 PM server.ClientHandler lambda$start$0
 INFO: client disconnected
-мар 21, 2022 3:34:13 PM server.Server unsubscribe
+мар 21, 2022 3:38:24 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 3:34:13 PM server.ClientHandler lambda$start$0
+мар 21, 2022 3:38:24 PM server.ClientHandler lambda$start$0
 INFO: socket was closed
-мар 21, 2022 3:34:27 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : qweqweqweq" was sent
-мар 21, 2022 3:34:27 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : e" was sent
-мар 21, 2022 3:34:27 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : w" was sent
-мар 21, 2022 3:34:27 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : e" was sent
-мар 21, 2022 3:34:28 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : w" was sent
-мар 21, 2022 3:34:28 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : e" was sent
-мар 21, 2022 3:34:28 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : w" was sent
-мар 21, 2022 3:34:32 PM server.Connector <init>
-INFO: client connected
-мар 21, 2022 3:34:32 PM server.Connector <init>
-INFO: client created successfully
-мар 21, 2022 3:34:32 PM server.Server isLoginAuthenticated
-WARNING: client was trying to enter with usable login
-мар 21, 2022 3:34:32 PM server.ClientHandler authCommandHandler
-SEVERE: login has arleady used
-мар 21, 2022 3:34:35 PM server.Server subscribe
-INFO: client was added
-мар 21, 2022 3:34:35 PM server.ClientHandler authCommandHandler
-INFO: client tryed to authenticated. Successfully
-мар 21, 2022 3:34:38 PM server.ClientHandler privateMessageHandler
-INFO: client wrote a private message
-мар 21, 2022 3:34:39 PM server.ClientHandler endCommandHandler
+мар 21, 2022 3:38:51 PM server.ClientHandler lambda$start$0
+INFO: client's escape successfully
+мар 21, 2022 3:38:51 PM server.ClientHandler lambda$start$0
 INFO: client disconnected
-мар 21, 2022 3:34:39 PM server.ClientHandler lambda$start$0
-INFO: client disconnected
-мар 21, 2022 3:34:39 PM server.Server unsubscribe
+мар 21, 2022 3:38:51 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 3:34:39 PM server.ClientHandler lambda$start$0
+мар 21, 2022 3:38:51 PM server.ClientHandler lambda$start$0
 INFO: socket was closed
-мар 21, 2022 3:34:40 PM server.ClientHandler endCommandHandler
+мар 21, 2022 3:43:44 PM server.Connector <init>
+INFO: client connected
+мар 21, 2022 3:43:44 PM server.Connector <init>
+INFO: client created successfully
+мар 21, 2022 3:43:44 PM server.Server subscribe
+INFO: client was added
+мар 21, 2022 3:43:44 PM server.ClientHandler authCommandHandler
+INFO: client tryed to authenticated. Successfully
+мар 21, 2022 3:43:53 PM server.Connector <init>
+INFO: client connected
+мар 21, 2022 3:43:53 PM server.Connector <init>
+INFO: client created successfully
+мар 21, 2022 3:43:53 PM server.Server subscribe
+INFO: client was added
+мар 21, 2022 3:43:53 PM server.ClientHandler authCommandHandler
+INFO: client tryed to authenticated. Successfully
+мар 21, 2022 3:45:44 PM server.ClientHandler lambda$start$0
+INFO: client's escape successfully
+мар 21, 2022 3:45:44 PM server.ClientHandler lambda$start$0
 INFO: client disconnected
-мар 21, 2022 3:34:40 PM server.ClientHandler lambda$start$0
-INFO: client disconnected
-мар 21, 2022 3:34:40 PM server.Server unsubscribe
+мар 21, 2022 3:45:44 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 3:34:40 PM server.ClientHandler lambda$start$0
+мар 21, 2022 3:45:44 PM server.ClientHandler lambda$start$0
+INFO: socket was closed
+мар 21, 2022 3:45:53 PM server.ClientHandler lambda$start$0
+INFO: client's escape successfully
+мар 21, 2022 3:45:53 PM server.ClientHandler lambda$start$0
+INFO: client disconnected
+мар 21, 2022 3:45:53 PM server.Server unsubscribe
+INFO: client was removed
+мар 21, 2022 3:45:53 PM server.ClientHandler lambda$start$0
+INFO: socket was closed
+мар 21, 2022 3:47:00 PM server.Connector <init>
+INFO: client connected
+мар 21, 2022 3:47:00 PM server.Connector <init>
+INFO: client created successfully
+мар 21, 2022 3:47:00 PM server.Server subscribe
+INFO: client was added
+мар 21, 2022 3:47:00 PM server.ClientHandler authCommandHandler
+INFO: client tryed to authenticated. Successfully
+мар 21, 2022 3:47:01 PM server.ClientHandler endCommandHandler
+INFO: client disconnected
+мар 21, 2022 3:47:01 PM server.ClientHandler lambda$start$0
+INFO: client disconnected
+мар 21, 2022 3:47:01 PM server.Server unsubscribe
+INFO: client was removed
+мар 21, 2022 3:47:01 PM server.ClientHandler lambda$start$0
+INFO: socket was closed
+мар 21, 2022 3:53:05 PM server.Connector <init>
+INFO: client connected
+мар 21, 2022 3:53:05 PM server.Connector <init>
+INFO: client created successfully
+мар 21, 2022 3:53:05 PM server.Server subscribe
+INFO: client was added
+мар 21, 2022 3:53:05 PM server.ClientHandler authCommandHandler
+INFO: client tryed to authenticated. Successfully
+мар 21, 2022 3:53:05 PM server.ClientHandler lambda$start$0
+SEVERE: IOException
+java.io.EOFException
+	at java.io.DataInputStream.readUnsignedShort(DataInputStream.java:340)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:589)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:564)
+	at server.ClientHandler.lambda$start$0(ClientHandler.java:63)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+мар 21, 2022 3:53:05 PM server.ClientHandler lambda$start$0
+INFO: client disconnected
+мар 21, 2022 3:53:05 PM server.Server unsubscribe
+INFO: client was removed
+мар 21, 2022 3:53:05 PM server.ClientHandler lambda$start$0
 INFO: socket was closed
