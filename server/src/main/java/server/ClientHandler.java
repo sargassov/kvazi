@@ -1,6 +1,7 @@
 package server;
 
 import commands.Command;
+import lombok.SneakyThrows;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -41,76 +42,32 @@ public class ClientHandler {
                     socket.setSoTimeout(120000);
                     while (true) {
                         String str = in.readUTF();
-                        if (str.startsWith("/")) {
-                            if (str.equals(Command.END)) {
-                                System.out.println("client want to disconnect ");
-                                log.info("client want to disconnect ");
-                                out.writeUTF(Command.END);
-                                throw new RuntimeException("client want to disconnect");
-                            }
-                            if (str.startsWith(Command.AUTH)) {
-                                String[] token = str.split("\\s");
-                                String newNick = server.getAuthService()
-                                        .getNicknameByLoginAndPassword(token[1], token[2]);
-                                login = token[1];
-                                if (newNick != null) {
-                                    if (!server.isLoginAuthenticated(login)) {
-                                        nickname = newNick;
-                                        sendMsg(Command.AUTH_OK + " " + nickname);
-                                        server.subscribe(this);
-                                        log.info("client tryed to authenticated. Successfully");
-                                        break;
-                                    } else {
-                                        sendMsg("С этим логином уже вошли");
-                                        log.log(Level.SEVERE, "login has arleady used");
-                                    }
-                                } else {
-                                    sendMsg("Неверный логин / пароль");
-                                    log.log(Level.WARNING, "incorrect login/password");
-                                }
-                            }
 
-                            if (str.startsWith(Command.REG)) {
-                                String[] token = str.split("\\s");
-                                if (token.length < 4) {
-                                    continue;
-                                }
-                                boolean regSuccessful = server.getAuthService()
-                                        .registration(token[1], token[2], token[3]);
-                                if (regSuccessful) {
-                                    socket.setSoTimeout(0);
-                                    sendMsg(Command.REG_OK);
-                                    log.info("Registration OK");
-                                } else {
-                                    sendMsg(Command.REG_NO);
-                                    log.log(Level.WARNING, "Registration failed");
-                                }
-                            }
-                        }
+                        if (str.equals(Command.END))
+                            endCommandHandler();
+
+                        if (str.startsWith(Command.AUTH))
+                            if(authCommandHandler(str))
+                                break;
+
+                        if (str.startsWith(Command.REG))
+                            regCommandHandler(str);
+
                     }
 
                     //цикл работы
                     while (true) {
                         String str = in.readUTF();
-
-                        if (str.startsWith("/")) {
-                            if (str.equals(Command.END)) {
-                                out.writeUTF(Command.END);
-                                log.log(Level.INFO, "client disconnected");
-                                break;
-                            }
-
-                            if (str.startsWith(Command.PRIVATE_MSG)) {
-                                String[] token = str.split("\\s+", 3);
-                                if (token.length < 3) {
-                                    continue;
-                                }
-                                server.privateMsg(this, token[1], token[2]);
-                                log.log(Level.INFO, "client wrote a private message");
-                            }
-                        } else {
+                        if(!str.startsWith("/"))
                             server.broadcastMsg(this, str);
+
+                        if (str.equals(Command.END)) {
+                            endCommandHandler();
+                            break;
                         }
+
+                        if (str.startsWith(Command.PRIVATE_MSG))
+                            privateMessageHandler(str);
                     }
 
 //               SocketTimeoutExceptioт
@@ -125,8 +82,6 @@ public class ClientHandler {
                     log.log(Level.SEVERE, "RuntimeException", e);
                 } catch (IOException e) {
                     log.log(Level.SEVERE, "IOException", e);
-                } catch (SQLException e) {
-                    log.log(Level.SEVERE, "SQLException", e);;
                 } finally {
                     System.out.println("Client disconnected");
                     log.info("client disconnected");
@@ -144,6 +99,64 @@ public class ClientHandler {
         } catch (IOException e) {
             log.log(Level.SEVERE, "IOException", e);
         }
+    }
+
+    @SneakyThrows
+    private void regCommandHandler(String str){
+        String[] token = str.split("\\s");
+        if (token.length < 4)
+            return;
+
+        boolean regSuccessful = server.getAuthService().registration(token[1], token[2], token[3]);
+
+        if(!regSuccessful){
+            sendMsg(Command.REG_NO);
+            log.log(Level.WARNING, "Registration failed");
+            return;
+        }
+
+        socket.setSoTimeout(0);
+        sendMsg(Command.REG_OK);
+        log.info("Registration OK");
+    }
+
+    @SneakyThrows
+    private boolean authCommandHandler(String str) {
+        String[] token = str.split("\\s");
+        String newNick = server.getAuthService().getNicknameByLoginAndPassword(token[1], token[2]);
+
+        login = token[1];
+        if(newNick == null){
+            sendMsg("Неверный логин / пароль");
+            log.log(Level.WARNING, "incorrect login/password");
+            return false;
+        }
+        if(server.isLoginAuthenticated(login)){
+            sendMsg("С этим логином уже вошли");
+            log.log(Level.SEVERE, "login has arleady used");
+            return false;
+        }
+
+        nickname = newNick;
+        sendMsg(Command.AUTH_OK + " " + nickname);
+        server.subscribe(this);
+        log.info("client tryed to authenticated. Successfully");
+        return true;
+    }
+
+    private void privateMessageHandler(String str) {
+        String[] token = str.split("\\s+", 3);
+        if (token.length < 3) {
+            return;
+        }
+        server.privateMsg(this, token[1], token[2]);
+        log.log(Level.INFO, "client wrote a private message");
+    }
+
+    @SneakyThrows
+    private void endCommandHandler() {
+        out.writeUTF(Command.END);
+        log.log(Level.INFO, "client disconnected");
     }
 
     public void sendMsg(String msg) {
