@@ -1,46 +1,40 @@
-мар 21, 2022 12:23:25 PM server.Server <init>
+мар 21, 2022 2:27:18 PM server.Connector <init>
 INFO: server started
-мар 21, 2022 12:23:50 PM server.Server <init>
+мар 21, 2022 2:27:32 PM server.Connector <init>
 INFO: client connected
-мар 21, 2022 12:23:50 PM server.Server <init>
+мар 21, 2022 2:27:32 PM server.Connector <init>
 INFO: client created successfully
-мар 21, 2022 12:23:50 PM server.Server subscribe
+мар 21, 2022 2:27:33 PM server.Server subscribe
 INFO: client was added
-мар 21, 2022 12:23:50 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:33 PM server.ClientHandler lambda$new$0
 INFO: client tryed to authenticated. Successfully
-мар 21, 2022 12:23:52 PM server.Server broadcastMsg
-INFO: message: "[ asd ] : qwdqwd" was sent
-мар 21, 2022 12:24:00 PM server.Server broadcastMsg
-INFO: message: "[ asd ] : dsdv" was sent
-мар 21, 2022 12:24:05 PM server.Server <init>
+мар 21, 2022 2:27:37 PM server.Server broadcastMsg
+INFO: message: "[ asd ] : fvefv" was sent
+мар 21, 2022 2:27:40 PM server.Connector <init>
 INFO: client connected
-мар 21, 2022 12:24:05 PM server.Server <init>
+мар 21, 2022 2:27:40 PM server.Connector <init>
 INFO: client created successfully
-мар 21, 2022 12:24:05 PM server.Server subscribe
+мар 21, 2022 2:27:40 PM server.Server subscribe
 INFO: client was added
-мар 21, 2022 12:24:05 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:40 PM server.ClientHandler lambda$new$0
 INFO: client tryed to authenticated. Successfully
-мар 21, 2022 12:24:07 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : qweqwe" was sent
-мар 21, 2022 12:24:07 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : qweqwe" was sent
-мар 21, 2022 12:24:09 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : qweqwe" was sent
-мар 21, 2022 12:24:09 PM server.Server broadcastMsg
-INFO: message: "[ qwe ] : qweqwe" was sent
-мар 21, 2022 12:24:12 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:41 PM server.Server broadcastMsg
+INFO: message: "[ qwe ] : qwqew" was sent
+мар 21, 2022 2:27:41 PM server.Server broadcastMsg
+INFO: message: "[ qwe ] : qwqew" was sent
+мар 21, 2022 2:27:44 PM server.ClientHandler lambda$new$0
 INFO: client disconnected
-мар 21, 2022 12:24:12 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:44 PM server.ClientHandler lambda$new$0
 INFO: client disconnected
-мар 21, 2022 12:24:12 PM server.Server unsubscribe
+мар 21, 2022 2:27:44 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 12:24:12 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:44 PM server.ClientHandler lambda$new$0
 INFO: socket was closed
-мар 21, 2022 12:24:13 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:45 PM server.ClientHandler lambda$new$0
 INFO: client disconnected
-мар 21, 2022 12:24:13 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:45 PM server.ClientHandler lambda$new$0
 INFO: client disconnected
-мар 21, 2022 12:24:13 PM server.Server unsubscribe
+мар 21, 2022 2:27:45 PM server.Server unsubscribe
 INFO: client was removed
-мар 21, 2022 12:24:13 PM server.ClientHandler lambda$new$0
+мар 21, 2022 2:27:45 PM server.ClientHandler lambda$new$0
 INFO: socket was closed

@@ -14,39 +14,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Data
 public class Server {
-    private ServerSocket server;
-    private Socket socket;
-    private final int PORT = 8189;
+
     private List<ClientHandler> clients;
     private AuthService authService;
     private static Logger log;
+    private Connector connector;
 
     public Server(Logger logger) throws SQLException, ClassNotFoundException {
         log = logger;
         clients = new CopyOnWriteArrayList<>();
         authService = new SQLAuthService();
-        try {
-            server = new ServerSocket(PORT);
-            System.out.println("server started");
-            log.info("server started");
+        connector = new Connector(logger, this);
 
-            while (true) {
-                socket = server.accept();
-                System.out.println("client connected" + socket.getRemoteSocketAddress());
-                log.info("client connected");
-                new ClientHandler(this, socket, log);
-                log.info("client created successfully");
-            }
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "IOException", e);
-        } finally {
-            try {
-                server.close();
-                log.info("server closed successfully");
-            } catch (IOException e) {
-                log.log(Level.SEVERE, "Error at server close", e);
-            }
-        }
     }
 
     public void broadcastMsg(ClientHandler sender, String msg) {
