@@ -1,6 +1,9 @@
 package server;
 
 import commands.Command;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,7 +12,7 @@ import java.util.List;
 import java.util.logging.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
+@Data
 public class Server {
     private ServerSocket server;
     private Socket socket;
@@ -102,14 +105,7 @@ public class Server {
 
     public void broadcastClientList(){
         StringBuilder sb = new StringBuilder(Command.CLIENT_LIST);
-        for (ClientHandler c : clients) {
-            sb.append(" ").append(c.getNickname());
-        }
-
-        String message = sb.toString();
-
-        for (ClientHandler c : clients) {
-            c.sendMsg(message);
-        }
+        clients.forEach(c -> sb.append(" ").append(c.getNickname()));
+        clients.forEach(c -> c.sendMsg(sb.toString()));
     }
 }

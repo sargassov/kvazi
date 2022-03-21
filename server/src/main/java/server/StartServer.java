@@ -1,11 +1,14 @@
 package server;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.*;
 import java.util.logging.SimpleFormatter;
+
 
 public class StartServer {
 
@@ -16,8 +19,6 @@ public class StartServer {
             Handler h = new FileHandler("logging.log");
             h.setFormatter(new SimpleFormatter());
             log.addHandler(h);
-
-            System.out.println("Handlers");
 
             for(Handler o : log.getHandlers()){
                 System.out.println(o);
