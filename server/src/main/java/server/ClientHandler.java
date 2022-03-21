@@ -27,78 +27,75 @@ public class ClientHandler {
 
     private ExecutorService service;
 
+    @SneakyThrows
     public ClientHandler(Server server, Socket socket, Logger logger) {
         service = Executors.newCachedThreadPool();
-        try {
-            this.server = server;
-            this.socket = socket;
-            in = new DataInputStream(socket.getInputStream());
-            out = new DataOutputStream(socket.getOutputStream());
-            log = logger;
+        this.server = server;
+        this.socket = socket;
+        in = new DataInputStream(socket.getInputStream());
+        out = new DataOutputStream(socket.getOutputStream());
+        log = logger;
+        start();
+    }
 
-            service.execute(() -> {
-                try {
-                    //цикл аутентификации
-                    socket.setSoTimeout(120000);
-                    while (true) {
-                        String str = in.readUTF();
+    private void start() {
+        service.execute(() -> {
+            try {
+                //цикл аутентификации
+                socket.setSoTimeout(120000);
+                while (true) {
+                    String str = in.readUTF();
 
-                        if (str.equals(Command.END))
-                            endCommandHandler();
+                    if (str.equals(Command.END))
+                        endCommandHandler();
 
-                        if (str.startsWith(Command.AUTH))
-                            if(authCommandHandler(str))
-                                break;
-
-                        if (str.startsWith(Command.REG))
-                            regCommandHandler(str);
-
-                    }
-
-                    //цикл работы
-                    while (true) {
-                        String str = in.readUTF();
-                        if(!str.startsWith("/"))
-                            server.broadcastMsg(this, str);
-
-                        if (str.equals(Command.END)) {
-                            endCommandHandler();
+                    if (str.startsWith(Command.AUTH))
+                        if(authCommandHandler(str))
                             break;
-                        }
 
-                        if (str.startsWith(Command.PRIVATE_MSG))
-                            privateMessageHandler(str);
+                    if (str.startsWith(Command.REG))
+                        regCommandHandler(str);
+
+                }
+
+                //цикл работы
+                while (true) {
+                    String str = in.readUTF();
+                    if(!str.startsWith("/"))
+                        server.broadcastMsg(this, str);
+
+                    if (str.equals(Command.END)) {
+                        endCommandHandler();
+                        break;
                     }
 
-//               SocketTimeoutExceptioт
-                } catch (SocketTimeoutException e){
-                    try {
-                        out.writeUTF(Command.END);
-                        log.log(Level.INFO, "client's escape successfully");
-                    } catch (IOException ex) {
-                        log.log(Level.SEVERE, "IOException", e);
-                    }
-                } catch (RuntimeException e) {
-                    log.log(Level.SEVERE, "RuntimeException", e);
+                    if (str.startsWith(Command.PRIVATE_MSG))
+                        privateMessageHandler(str);
+                }
+            } catch (SocketTimeoutException e){
+                try {
+                    out.writeUTF(Command.END);
+                    log.log(Level.INFO, "client's escape successfully");
+                } catch (IOException ex) {
+                    log.log(Level.SEVERE, "IOException", e);
+                }
+            } catch (RuntimeException e) {
+                log.log(Level.SEVERE, "RuntimeException", e);
+            } catch (IOException e) {
+                log.log(Level.SEVERE, "IOException", e);
+            } finally {
+                System.out.println("Client disconnected");
+                log.info("client disconnected");
+                server.unsubscribe(this);
+                try {
+                    socket.close();
+                    log.info("socket was closed");
                 } catch (IOException e) {
                     log.log(Level.SEVERE, "IOException", e);
-                } finally {
-                    System.out.println("Client disconnected");
-                    log.info("client disconnected");
-                    server.unsubscribe(this);
-                    try {
-                        socket.close();
-                        log.info("socket was closed");
-                    } catch (IOException e) {
-                        log.log(Level.SEVERE, "IOException", e);
-                    }
                 }
-            });
-            service.shutdown();
-
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "IOException", e);
-        }
+            }
+        });
+        service.shutdown();
     }
 
     @SneakyThrows

@@ -19,6 +19,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import lombok.SneakyThrows;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -83,15 +84,12 @@ public class Controller implements Initializable {
         Platform.runLater(() -> {
             stage = (Stage) textField.getScene().getWindow();
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @SneakyThrows
                 @Override
                 public void handle(WindowEvent event) {
-                    System.out.println("bye");
+                    System.out.println("Goodbye!");
                     if (socket != null && !socket.isClosed()) {
-                        try {
-                            out.writeUTF(Command.END);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        out.writeUTF(Command.END);
                     }
                 }
             });
@@ -113,67 +111,64 @@ public class Controller implements Initializable {
             new Thread(() -> {
                 try {
                     //цикл аутентификации
-                    socket.setSoTimeout(12000);
+                    socket.setSoTimeout(120000);
                     while (true) {
                         String str = in.readUTF();
-                        if (str.startsWith("/")) {
-                            if (str.equals(Command.END)) {
-                                System.out.println("server disconnected us");
-                                throw new RuntimeException("server disconnected us");
-                            }
-                            if (str.startsWith(Command.AUTH_OK)) {
-                                nickname = str.split("\\s")[1];
-                                setAuthenticated(true);
-                                break;
-                            }
-                            if (str.equals(Command.REG_OK)) {
-                                socket.setSoTimeout(0);
-                                regController.resultTryToReg(true);
-                            }
-                            if (str.equals(Command.REG_NO)) {
-                                regController.resultTryToReg(false);
-                            }
-                        } else {
+
+                        if(!str.startsWith("/")){
                             textArea.appendText(str + "\n");
                         }
+
+                        if (str.equals(Command.END))
+                            endCommandHandler();
+
+                        if (str.startsWith(Command.AUTH_OK)){
+                            authOkCommandHndler(str);
+                            break;
+                        }
+
+                        if (str.equals(Command.REG_OK)) {
+                            regCommandHandler();
+                        }
+
+                        if (str.equals(Command.REG_NO)) {
+                            regFailedCommandHandler();
+                        }
+
                     }
 
-                    if(chatHistory.exportHistory().size() > chatHistory.getInitialCapacity()){
-                        for(int x = chatHistory.exportHistory().size() - chatHistory.getInitialCapacity();
-                            x <= chatHistory.exportHistory().size(); x++){
-                            textArea.appendText(chatHistory.exportHistory().get(x - 1) + "\n");
-                        }
-                    }
-                    else{
-                        for(String string : chatHistory.exportHistory()){
-                            textArea.appendText(string + "\n");
-                        }
-                    }
+//                    if(chatHistory.exportHistory().size() > chatHistory.getInitialCapacity()){
+//                        for(int x = chatHistory.exportHistory().size() - chatHistory.getInitialCapacity();
+//                            x <= chatHistory.exportHistory().size(); x++){
+//                            textArea.appendText(chatHistory.exportHistory().get(x - 1) + "\n");
+//                        }
+//                    }
+//                    else{
+//                        for(String string : chatHistory.exportHistory()){
+//                            textArea.appendText(string + "\n");
+//                        }
+//                    }
 
                     //цикл работы
                     while (true) {
                         String str = in.readUTF();
-                        if (str.startsWith("/")) {
-                            if (str.equals(Command.END)) {
-                                setAuthenticated(false);
-                                break;
-                            }
 
-                            if (str.startsWith(Command.CLIENT_LIST)) {
-                                String[] token = str.split("\\s");
-                                Platform.runLater(() -> {
-                                    clientList.getItems().clear();
-                                    for (int i = 1; i < token.length; i++) {
-                                        clientList.getItems().add(token[i]);
-                                    }
-                                });
-                            }
-                        } else {
+                        if(!str.startsWith("/")){
                             if(nickname.equals(str.split("\\s")[1])) {
                                 chatHistory.addToHistory(str);
                             }
                             textArea.appendText(str + "\n");
                         }
+
+                        if (str.equals(Command.END)) {
+                            endCommandHandler();
+                            break;
+                        }
+
+                        if (str.startsWith(Command.CLIENT_LIST)) {
+                            clientListCommandHandler(str);
+                        }
+
                     }
                 } catch (SocketTimeoutException e){
                     try {
@@ -193,7 +188,6 @@ public class Controller implements Initializable {
                         e.printStackTrace();
                     }
                 }
-
             }).start();
 
         } catch (IOException e) {
@@ -201,42 +195,68 @@ public class Controller implements Initializable {
         }
     }
 
+    private void regFailedCommandHandler() {
+        regController.resultTryToReg(false);
+    }
+
+    @SneakyThrows
+    private void regCommandHandler() {
+        socket.setSoTimeout(0);
+        regController.resultTryToReg(true);
+    }
+
+    private void authOkCommandHndler(String str) {
+        nickname = str.split("\\s")[1];
+        setAuthenticated(true);
+
+    }
+
+    private void clientListCommandHandler(String str) {
+        String[] token = str.split("\\s");
+        Platform.runLater(() -> {
+            clientList.getItems().clear();
+            for (int i = 1; i < token.length; i++) {
+                clientList.getItems().add(token[i]);
+            }
+        });
+    }
+
+    private void endCommandHandler() {
+        setAuthenticated(false);
+    }
+
     public void returnFromTheHistory(String text){
         textArea.appendText(text + "\n");
     }
 
+    @SneakyThrows
     public void sendMsg(ActionEvent actionEvent) {
-        try {
-            if (textField.getText().trim().length() > 0) {
-                out.writeUTF(textField.getText());
-                textField.clear();
-                textField.requestFocus();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (textField.getText().trim().length() > 0) {
+            out.writeUTF(textField.getText());
+            textField.clear();
+            textField.requestFocus();
         }
     }
 
+    @SneakyThrows
     public void trytoAuth(ActionEvent actionEvent) {
         if (socket == null || socket.isClosed()) {
             connect();
         }
 
         String msg = String.format("%s %s %s", Command.AUTH, loginField.getText().trim(), passwordField.getText().trim());
-        try {
-            out.writeUTF(msg);
-            passwordField.clear();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        out.writeUTF(msg);
+        passwordField.clear();
+
     }
 
     private void setTitle(String title) {
         Platform.runLater(() -> {
             if (title.equals("")) {
-                stage.setTitle("Квазимодо");
+                stage.setTitle("Чат");
             } else {
-                stage.setTitle(String.format("Квазимодо [ %s ]", title));
+                stage.setTitle(String.format("Чат [ %s ]", title));
             }
         });
     }
@@ -254,35 +274,29 @@ public class Controller implements Initializable {
         regStage.show();
     }
 
+    @SneakyThrows
     private void createRegWindow() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reg.fxml"));
-            Parent root = fxmlLoader.load();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reg.fxml"));
+        Parent root = fxmlLoader.load();
 
-            regController = fxmlLoader.getController();
-            regController.setController(this);
+        regController = fxmlLoader.getController();
+        regController.setController(this);
 
-            regStage = new Stage();
-            regStage.setTitle("Квазимодо регистрация");
-            regStage.setScene(new Scene(root, 400, 300));
+        regStage = new Stage();
+        regStage.setTitle("Квазимодо регистрация");
+        regStage.setScene(new Scene(root, 400, 300));
 
-            regStage.initModality(Modality.APPLICATION_MODAL);
-            regStage.initStyle(StageStyle.UTILITY);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        regStage.initModality(Modality.APPLICATION_MODAL);
+        regStage.initStyle(StageStyle.UTILITY);
+
     }
 
+    @SneakyThrows
     public void tryToReg(String login, String password, String nickname) {
         String message = String.format("%s %s %s %s", Command.REG, login, password, nickname);
         if (socket == null || socket.isClosed()) {
             connect();
         }
-
-        try {
-            out.writeUTF(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        out.writeUTF(message);
     }
 }

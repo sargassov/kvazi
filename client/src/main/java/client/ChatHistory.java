@@ -41,6 +41,7 @@ public class ChatHistory {
     }
 
     public ArrayList<String> exportHistory(){
+        System.out.println("DFCGBHJNKMLJHBGCFDXCGBM");
         return history;
     }
 
