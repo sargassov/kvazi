@@ -1,6 +1,8 @@
 package server;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SQLAuthService implements AuthService {
@@ -69,9 +71,15 @@ public class SQLAuthService implements AuthService {
     }
 
     public static void writedb() throws SQLException {
-        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('qwe', 'qwe', 'qwe')");
-        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('asd', 'asd', 'asd')");
-        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('zxc', 'zxc', 'zxc')");
+        List<String> users = new ArrayList<>(Arrays.asList("qwe", "asd", "zxc"));
+
+        for(String s: users)
+            statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') " +
+                    "VALUES('" + s + "', '" + s + "', '" + s + "')");
+
+//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('qwe', 'qwe', 'qwe')");
+//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('asd', 'asd', 'asd')");
+//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('zxc', 'zxc', 'zxc')");
     }
 
     public static void closedb() throws SQLException {
