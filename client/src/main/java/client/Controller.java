@@ -204,9 +204,6 @@ public class Controller implements Initializable {
         setAuthenticated(false);
     }
 
-    public void returnFromTheHistory(String text){
-        textArea.appendText(text + "\n");
-    }
 
     @SneakyThrows
     public void sendMsg(ActionEvent actionEvent) {
