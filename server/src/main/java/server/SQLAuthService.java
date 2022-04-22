@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SQLAuthService implements AuthService {
+public class SQLAuthService implements AuthService { //Авторизация через базу данных
 
     public static Connection connection;
     public static Statement statement;
@@ -70,16 +70,12 @@ public class SQLAuthService implements AuthService {
                 "('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'nickname' text, 'login' text, 'password' text);");
     }
 
-    public static void writedb() throws SQLException {
+    public static void writedb() throws SQLException { //загрузка значений по умолчанию
         List<String> users = new ArrayList<>(Arrays.asList("qwe", "asd", "zxc"));
 
         for(String s: users)
             statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') " +
                     "VALUES('" + s + "', '" + s + "', '" + s + "')");
-
-//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('qwe', 'qwe', 'qwe')");
-//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('asd', 'asd', 'asd')");
-//        statement.execute("INSERT INTO 'users' ('nickname', 'login', 'password') VALUES('zxc', 'zxc', 'zxc')");
     }
 
     public static void closedb() throws SQLException {

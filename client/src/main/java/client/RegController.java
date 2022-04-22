@@ -6,7 +6,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-public class RegController {
+public class RegController { //контроллер регистрации
     @FXML
     private TextField loginField;
     @FXML
@@ -22,7 +22,7 @@ public class RegController {
         this.controller = controller;
     }
 
-    public void tryToReg(ActionEvent actionEvent) {
+    public void tryToReg(ActionEvent actionEvent) { // попытка регистарии
         String login = loginField.getText().trim();
         String password = passwordField.getText().trim();
         String nickname = nicknameField.getText().trim();
@@ -40,7 +40,7 @@ public class RegController {
         controller.tryToReg(login, password, nickname);
     }
 
-    public void resultTryToReg(boolean flag) {
+    public void resultTryToReg(boolean flag) { //результирующий метод регистрации
         if (flag) {
             textArea.appendText("Регистрация прошла успешно\n");
         } else {

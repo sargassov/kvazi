@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable { //контроллер онка клиента
     @FXML
     public ListView<String> clientList;
     @FXML
@@ -62,7 +62,7 @@ public class Controller implements Initializable {
 
     private static boolean firstClient = true;
 
-    public void setAuthenticated(boolean authenticated) {
+    public void setAuthenticated(boolean authenticated) { //обработка отображения при аутентификации
         this.authenticated = authenticated;
         messagePanel.setVisible(authenticated);
         messagePanel.setManaged(authenticated);
@@ -80,7 +80,7 @@ public class Controller implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) { //загрузка параметров окна
         Platform.runLater(() -> {
             stage = (Stage) textField.getScene().getWindow();
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -96,7 +96,7 @@ public class Controller implements Initializable {
         });
     }
 
-    private void connect() {
+    private void connect() { //соединение с сервером
         try {
             socket = new Socket(IP_ADDRESS, PORT);
             in = new DataInputStream(socket.getInputStream());
@@ -177,19 +177,19 @@ public class Controller implements Initializable {
     private void regFailedCommandHandler() {
         regController.resultTryToReg(false);
     }
-
+                                    // команды удачной и проваленной обработки регистрации нового пользователя
     @SneakyThrows
     private void regCommandHandler() {
         socket.setSoTimeout(0);
         regController.resultTryToReg(true);
     }
-
+                    // если регистраия удачна
     private void authOkCommandHndler(String str) {
         nickname = str.split("\\s")[1];
         setAuthenticated(true);
 
     }
-
+          //управления списком подключенных клиентов
     private void clientListCommandHandler(String str) {
         String[] token = str.split("\\s");
         Platform.runLater(() -> {
@@ -205,7 +205,7 @@ public class Controller implements Initializable {
     }
 
 
-    @SneakyThrows
+    @SneakyThrows //отправка обычного сообщения
     public void sendMsg(ActionEvent actionEvent) {
         if (textField.getText().trim().length() > 0) {
             out.writeUTF(textField.getText());
@@ -214,7 +214,7 @@ public class Controller implements Initializable {
         }
     }
 
-    @SneakyThrows
+    @SneakyThrows //авторизация
     public void trytoAuth(ActionEvent actionEvent) {
         if (socket == null || socket.isClosed()) {
             connect();
@@ -227,7 +227,7 @@ public class Controller implements Initializable {
 
     }
 
-    private void setTitle(String title) {
+    private void setTitle(String title) { //установка имени окна
         Platform.runLater(() -> {
             if (title.equals("")) {
                 stage.setTitle("Чат");
@@ -237,13 +237,13 @@ public class Controller implements Initializable {
         });
     }
 
-    public void clientListClicked(MouseEvent mouseEvent) {
+    public void clientListClicked(MouseEvent mouseEvent) { //вешаем слушателя на мышь
         System.out.println(clientList.getSelectionModel().getSelectedItem());
         String msg = String.format("%s %s ", Command.PRIVATE_MSG, clientList.getSelectionModel().getSelectedItem());
         textField.setText(msg);
     }
 
-    public void clickRegBtn(ActionEvent actionEvent) {
+    public void clickRegBtn(ActionEvent actionEvent) { //обработка кнопки регистарции
         if (regStage == null) {
             createRegWindow();
         }
@@ -251,7 +251,7 @@ public class Controller implements Initializable {
     }
 
     @SneakyThrows
-    private void createRegWindow() {
+    private void createRegWindow() { //создания подокна регистрации
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/reg.fxml"));
         Parent root = fxmlLoader.load();
 
@@ -259,7 +259,7 @@ public class Controller implements Initializable {
         regController.setController(this);
 
         regStage = new Stage();
-        regStage.setTitle("Квазимодо регистрация");
+        regStage.setTitle("Квази регистрация");
         regStage.setScene(new Scene(root, 400, 300));
 
         regStage.initModality(Modality.APPLICATION_MODAL);
@@ -267,7 +267,7 @@ public class Controller implements Initializable {
 
     }
 
-    @SneakyThrows
+    @SneakyThrows //попытка регистарации
     public void tryToReg(String login, String password, String nickname) {
         String message = String.format("%s %s %s %s", Command.REG, login, password, nickname);
         if (socket == null || socket.isClosed()) {

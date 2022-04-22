@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Connector {
+public class Connector { //контрольподключения клиента и создание обработчика
     private ServerSocket serverSocket;
     private Socket socket;
     private final int PORT = 8189;
@@ -15,7 +15,7 @@ public class Connector {
 
     public Connector(Logger log, Server server) {
         try {
-            serverSocket = new ServerSocket(PORT);
+            serverSocket = new ServerSocket(PORT); //контроль подключения
             System.out.println("server started");
             log.info("server started");
 

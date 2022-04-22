@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.*;
 
-public class ClientHandler {
+public class ClientHandler { //класс для работы с подклчившимся клиентом
     private Server server;
     private Socket socket;
 
@@ -98,7 +98,7 @@ public class ClientHandler {
         service.shutdown();
     }
 
-    @SneakyThrows
+    @SneakyThrows //обработка команды регистрации
     private void regCommandHandler(String str){
         String[] token = str.split("\\s");
         if (token.length < 4)
@@ -117,7 +117,7 @@ public class ClientHandler {
         log.info("Registration OK");
     }
 
-    @SneakyThrows
+    @SneakyThrows //обработка команды аутентификации
     private boolean authCommandHandler(String str) {
         String[] token = str.split("\\s");
         String newNick = server.getAuthService().getNicknameByLoginAndPassword(token[1], token[2]);
@@ -141,7 +141,7 @@ public class ClientHandler {
         return true;
     }
 
-    private void privateMessageHandler(String str) {
+    private void privateMessageHandler(String str) { //отправка приватного сообщения
         String[] token = str.split("\\s+", 3);
         if (token.length < 3) {
             return;
@@ -151,7 +151,7 @@ public class ClientHandler {
     }
 
     @SneakyThrows
-    private void endCommandHandler() {
+    private void endCommandHandler() { //обработка отключения
         out.writeUTF(Command.END);
         log.log(Level.INFO, "client disconnected");
     }

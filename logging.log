@@ -1,50 +1,22 @@
-мар 24, 2022 7:08:55 AM server.Connector <init>
+апр 22, 2022 4:35:20 PM server.Connector <init>
 INFO: server started
-мар 24, 2022 7:09:25 AM server.Connector <init>
+апр 22, 2022 4:36:04 PM server.Connector <init>
 INFO: client connected
-мар 24, 2022 7:09:25 AM server.Connector <init>
+апр 22, 2022 4:36:04 PM server.Connector <init>
 INFO: client created successfully
-мар 24, 2022 7:09:25 AM server.Server subscribe
+апр 22, 2022 4:36:04 PM server.Server subscribe
 INFO: client was added
-мар 24, 2022 7:09:25 AM server.ClientHandler authCommandHandler
+апр 22, 2022 4:36:04 PM server.ClientHandler authCommandHandler
 INFO: client tryed to authenticated. Successfully
-мар 24, 2022 7:09:28 AM server.Server broadcastMsg
-INFO: message: "[ qwe ] : fvdfvdfadfb" was sent
-мар 24, 2022 7:10:11 AM server.Connector <init>
-INFO: client connected
-мар 24, 2022 7:10:11 AM server.Connector <init>
-INFO: client created successfully
-мар 24, 2022 7:10:11 AM server.Server isLoginAuthenticated
-WARNING: client was trying to enter with usable login
-мар 24, 2022 7:10:11 AM server.ClientHandler authCommandHandler
-SEVERE: login has arleady used
-мар 24, 2022 7:10:16 AM server.Server subscribe
-INFO: client was added
-мар 24, 2022 7:10:16 AM server.ClientHandler authCommandHandler
-INFO: client tryed to authenticated. Successfully
-мар 24, 2022 7:10:19 AM server.Server broadcastMsg
-INFO: message: "[ asd ] : ewewevwev" was sent
-мар 24, 2022 7:10:19 AM server.Server broadcastMsg
-INFO: message: "[ asd ] : ewewevwev" was sent
-мар 24, 2022 7:10:25 AM server.ClientHandler privateMessageHandler
-INFO: client wrote a private message
-мар 24, 2022 7:10:31 AM server.Server privateMsg
-INFO: private message: "[ asd ] to [ qwe ]: WEFWEF" was sent to qwe
-мар 24, 2022 7:10:31 AM server.ClientHandler privateMessageHandler
-INFO: client wrote a private message
-мар 24, 2022 7:10:38 AM server.ClientHandler endCommandHandler
+апр 22, 2022 4:36:06 PM server.Server broadcastMsg
+INFO: message: "[ asd ] : wedwedwed" was sent
+апр 22, 2022 4:36:09 PM server.Server broadcastMsg
+INFO: message: "[ asd ] : wedwedwedwed" was sent
+апр 22, 2022 4:36:10 PM server.ClientHandler endCommandHandler
 INFO: client disconnected
-мар 24, 2022 7:10:38 AM server.ClientHandler lambda$start$0
+апр 22, 2022 4:36:10 PM server.ClientHandler lambda$start$0
 INFO: client disconnected
-мар 24, 2022 7:10:38 AM server.Server unsubscribe
+апр 22, 2022 4:36:10 PM server.Server unsubscribe
 INFO: client was removed
-мар 24, 2022 7:10:38 AM server.ClientHandler lambda$start$0
-INFO: socket was closed
-мар 24, 2022 7:10:39 AM server.ClientHandler endCommandHandler
-INFO: client disconnected
-мар 24, 2022 7:10:39 AM server.ClientHandler lambda$start$0
-INFO: client disconnected
-мар 24, 2022 7:10:39 AM server.Server unsubscribe
-INFO: client was removed
-мар 24, 2022 7:10:39 AM server.ClientHandler lambda$start$0
+апр 22, 2022 4:36:10 PM server.ClientHandler lambda$start$0
 INFO: socket was closed

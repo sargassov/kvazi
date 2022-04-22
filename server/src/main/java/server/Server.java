@@ -2,18 +2,13 @@ package server;
 
 import commands.Command;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Data
-public class Server {
+public class Server { //Класс сервера
 
     private List<ClientHandler> clients;
     private AuthService authService;
@@ -28,7 +23,7 @@ public class Server {
 
     }
 
-    public void broadcastMsg(ClientHandler sender, String msg) {
+    public void broadcastMsg(ClientHandler sender, String msg) { //отправка широковещательного сообщения
         String message = String.format("[ %s ] : %s", sender.getNickname(), msg);
         for (ClientHandler c : clients) {
             c.sendMsg(message);
@@ -36,7 +31,7 @@ public class Server {
         }
     }
 
-    public void privateMsg(ClientHandler sender, String receiver, String msg) {
+    public void privateMsg(ClientHandler sender, String receiver, String msg) { //отправка приватного сообщения
         String message = String.format("[ %s ] to [ %s ]: %s", sender.getNickname(), receiver, msg);
         for (ClientHandler c : clients) {
             if(c.getNickname().equals(receiver)){
@@ -56,13 +51,13 @@ public class Server {
         return clients;
     }
 
-    public void subscribe(ClientHandler clientHandler) {
+    public void subscribe(ClientHandler clientHandler) { //добавление в список пользователей в чате
         clients.add(clientHandler);
         log.log(Level.INFO, "client was added");
         broadcastClientList();
     }
 
-    public void unsubscribe(ClientHandler clientHandler) {
+    public void unsubscribe(ClientHandler clientHandler) { //удаление пользователя из списка
         clients.remove(clientHandler);
         log.log(Level.INFO, "client was removed");
         broadcastClientList();
@@ -72,7 +67,7 @@ public class Server {
         return authService;
     }
 
-    public boolean isLoginAuthenticated(String login){
+    public boolean isLoginAuthenticated(String login){  //проверка на уже зашедшего пользователя
         for (ClientHandler c : clients) {
             if(c.getLogin().equals(login)){
                 log.log(Level.WARNING, "client was trying to enter with usable login");
@@ -82,7 +77,7 @@ public class Server {
         return false;
     }
 
-    public void broadcastClientList(){
+    public void broadcastClientList(){ //оправка списка клиентов для отображения на клиенте
         StringBuilder sb = new StringBuilder(Command.CLIENT_LIST);
         clients.forEach(c -> sb.append(" ").append(c.getNickname()));
         clients.forEach(c -> c.sendMsg(sb.toString()));
